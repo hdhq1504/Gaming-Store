@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import GenreList from "../components/GenreList";
 import GlobalAPI from "../services/GlobalAPI";
+import Banner from "../components/Banner";
+import TrendingGames from "../components/TrendingGames";
 
 function Home() {
   const [allGameList, setAllGameList] = useState();
@@ -20,7 +22,14 @@ function Home() {
       <div className="hidden md:block">
         <GenreList />
       </div>
-      <div className="col-span-4 md:col-span-3 bg-blue-400">Game List</div>
+      <div className="col-span-4 md:col-span-3">
+        {allGameList?.length > 0 ? (
+          <div>
+            <Banner gameBanner={allGameList[0]} />
+            <TrendingGames gameList={allGameList} />
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }
