@@ -5,7 +5,6 @@ import Header from "./components/Header";
 import { ThemeContext } from "./context/ThemeContext";
 
 function App() {
-  const [count, setCount] = useState(0);
   const [theme, setTheme] = useState("dark");
   useEffect(() => {
     setTheme(
@@ -18,7 +17,7 @@ function App() {
       <div
         className={`${theme} ${
           theme == "dark" ? "bg-[#121212]" : null
-        } h-[100vh]`}
+        } min-h-[100vh]`}
       >
         <Header />
         <Home />
