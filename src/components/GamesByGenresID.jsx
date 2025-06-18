@@ -1,32 +1,74 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 
-function GamesByGenresID({ gameList }) {
-  useEffect(() => {
-    console.log(gameList);
-  }, []);
-
+function GamesByGenresID({ gameList, selectedGenresName }) {
   return (
-    <div>
-      <h2 className="font-bold text-[30px] dark:text-white mt-5">
-        Popular Games
+    <div className="px-4 py-6">
+      <h2 className="font-bold text-3xl dark:text-white mb-6 flex items-center">
+        <span className="mr-2">{selectedGenresName}</span>
+        <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+          ({gameList.length} games)
+        </span>
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-5">
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {gameList.map((item) => (
-          <div className="bg-[#76a8f75e] p-3 rounded-lg pb-10 h-full hover:scale-110 transition-all ease-in-out duration-300 cursor-pointer">
-            <img
-              src={item.background_image}
-              className="w-full h-[80%] rounded-xl object-cover"
-            />
-            <h2 className="text-[20px] dark:text-white font-bold">
-              {item.name}
-              <span className="p-1 rounded-sm ml-2 text-[10px] bg-green-100 text-green-700 font-medium">
-                {item.metacritic}
-              </span>
-            </h2>
-            <h2 className="text-gray-500 dark:text-gray-300">
-              ⭐{item.rating} 💬{item.reviews_count} 🔥{item.suggestions_count}
-            </h2>
-          </div>
+          <Link
+            to={`/game/${item.id}`}
+            key={item.id}
+            className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+          >
+            <div className="relative">
+              <img src={item.background_image} alt={item.name} className="w-full h-48 object-cover"
+              />
+              {item.metacritic && (
+                <span
+                  className={`absolute top-2 right-2 px-2 py-1 rounded-md text-sm font-bold
+                              ${
+                                item.metacritic >= 80
+                                  ? "bg-green-500"
+                                  : item.metacritic >= 60
+                                  ? "bg-yellow-500"
+                                  : "bg-red-500"
+                              } 
+                              text-white`}
+                >
+                  {item.metacritic}
+                </span>
+              )}
+            </div>
+
+            <div className="p-4">
+              <h3 className="text-lg font-bold mb-2 dark:text-white line-clamp-1">
+                {item.name}
+              </h3>
+
+              <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-300">
+                <div className="flex items-center gap-1">
+                  <span className="text-yellow-500">⭐</span>
+                  <span>{item.rating || "N/A"}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="text-blue-500">💬</span>
+                  <span>{item.reviews_count.toLocaleString()}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="text-red-500">🔥</span>
+                  <span>{item.suggestions_count.toLocaleString()}</span>
+                </div>
+              </div>
+
+              {item.genres && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {item.genres.slice(0, 3).map((genre) => (
+                    <span key={genre.id} className="px-2 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                      {genre.name}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </Link>
         ))}
       </div>
     </div>

@@ -1,28 +1,34 @@
-import { useState, useEffect } from "react";
 import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
+import GameDetails from "./pages/GameDetails";
 import Header from "./components/Header";
-import { ThemeContext } from "./context/ThemeContext";
+import ThemeProvider from "./context/ThemeContext";
+import { useTheme } from "./context/theme/useTheme";
 
-function App() {
-  const [theme, setTheme] = useState("dark");
-  useEffect(() => {
-    setTheme(
-      localStorage.getItem("theme") ? localStorage.getItem("theme") : "dark"
-    );
-  }, []);
+function AppContent() {
+  const { darkMode } = useTheme();
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      <div
-        className={`${theme} ${
-          theme == "dark" ? "bg-[#121212]" : null
-        } min-h-[100vh]`}
-      >
+    <div className={`${darkMode ? "dark" : ""}`}>
+      <div className="min-h-screen bg-gray-50 dark:bg-[#121212] transition-colors duration-300">
         <Header />
-        <Home />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/game/:id" element={<GameDetails />} />
+        </Routes>
       </div>
-    </ThemeContext.Provider>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </ThemeProvider>
   );
 }
 

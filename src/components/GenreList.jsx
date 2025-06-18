@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import GlobalAPI from "../services/GlobalAPI";
 
-function GenreList({ genreID }) {
+function GenreList({ genreID, selectedGenresName }) {
   const [genreList, setGenreList] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -17,11 +17,11 @@ function GenreList({ genreID }) {
   };
 
   return (
-    <div>
+    <div className="px-6">
       <h2 className="text-[30px] font-bold dark:text-white">Genres</h2>
       {genreList.map((item, index) => (
         <div
-          onClick={() => {setActiveIndex(index); genreID(item.id)}}
+          onClick={() => {setActiveIndex(index); genreID(item.id); selectedGenresName(item.name)}}
           className={`flex gap-2 items-center mb-2 cursor-pointer hover:bg-gray-300 p-2 group rounded-lg hover:dark:bg-gray-600 ${
             activeIndex == index ? "bg-gray-300 dark:bg-gray-600" : null
           }`}
